@@ -3,22 +3,26 @@ class Bullet {
         this.ctx = ctx;
         
         this.pos = {
-            x: playerPosX + (playerWidth / 2),
+            x: playerPosX + (playerWidth / 3),
             y: playerPosY + (playerHeight / 3)
           }
-          this.radius = 10;
+
+          this.width = 18
+          this.height = 18
+          // this.radius = 10;
           this.speed = {
             y: 10
           }
         }
 
+        
+
         draw() {
           this.ctx.fillStyle = "red";
           this.ctx.beginPath();
-          this.ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
+          this.ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
           this.ctx.fill();
           this.ctx.closePath();
-        //   this.ctx.fillStyle = "black";
           this.move()
         }
         

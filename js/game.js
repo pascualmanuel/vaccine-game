@@ -10,11 +10,10 @@ const covidGame = {
     canvasSize: { width: undefined, height: undefined },
     background: undefined,
     player: undefined,
-    scoreBoard: undefined,
+    // scoreBoard: 0,
     framesCounter: 0,
     frames: 60,
     obstacles: [],
-    bullets: [],
     keys: {
     player: {
         SPACE: " ",
@@ -26,7 +25,6 @@ const covidGame = {
     init() {
       this.setContext()
       this.setDimensions()
-      this.drawBoard()
       this.createAll()
       this.setListeners()
       this.start()
@@ -41,6 +39,14 @@ const covidGame = {
         this.clearScreen()
         this.drawAll()
         this.moveObstacles()
+        // if(this.detectFloorCollision()) {
+        // // console.log("quitlive");
+        // }
+        this.detectFloorCollision()
+        // console.log(this.detectCollision())
+        if (this.detectCollision()) {
+          
+        }
       }, 1000 / this.frames);
     },
 
@@ -56,14 +62,9 @@ const covidGame = {
 
     setDimensions() {
       this.canvasDOM.setAttribute("width", 1000)
-      this.canvasDOM.setAttribute("height", 700)
+      this.canvasDOM.setAttribute("height", 850)
       this.canvasSize.width = 1000
-      this.canvasSize.height = 700
-    },
-
-    drawBoard() {
-    this.ctx.strokeRect(0, 0, 1000, 700);
-
+      this.canvasSize.height = 850
     },
 
     createPlayer() {
@@ -76,8 +77,8 @@ const covidGame = {
     },
 
     drawAll() {
+      this.drawScoreBoard()
       this.drawPlayer()
-      this.drawBoard()
       this.drawBullets()
       this.drawObstacles()
     },
@@ -85,14 +86,20 @@ const covidGame = {
     drawObstacles() {
       this.obstacles.forEach(obstacle => obstacle.draw())
     },
-
     
-
     createAll() {
       this.createPlayer()
       this.createObstacles()
+      this.createScoreBoard()
     },
 
+    createScoreBoard() {
+      this.scoreBoard = new Score(this.ctx)
+    },
+
+    drawScoreBoard() {
+      this.scoreBoard.draw()
+    },
 
     setListeners() {
       document.onkeydown = e => {
@@ -105,20 +112,72 @@ const covidGame = {
     drawBullets() {
       this.player.bullets.forEach(bullet => bullet.draw())
     },
-  
+      
     createObstacles() {
       const randomX = Math.floor(Math.random() * 950 + 10)
-      const randomSpeed = Math.floor(Math.random() * 3 + 2)
-      this.obstacles.push(new Obstacle(this.ctx, randomX, 0, this.width, this.height, randomSpeed))
+      const randomSpeed = Math.floor(Math.random() * 1 + 1)
+      this.obstacles.push(new Obstacle(this.ctx, randomX, 50, 70, 70, randomSpeed, "bacteria.png"))
 
     },
 
     moveObstacles() {
       this.obstacles.forEach(obs => obs.move())
+    },
+    
+    createBackground() {
+      this.background = new Background(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "background2.png")
+    },
+
+
+   detectCollision() { 
+     return this.player.bullets.some((bullet, bulletIndex) => {
+      return this.obstacles.some((obstacle, obstacleIndex) => {
+         if (bullet.pos.x < obstacle.posX + obstacle.width 
+          && bullet.pos.x + bullet.width > obstacle.posX 
+          && bullet.pos.y < obstacle.posY + obstacle.height
+          && bullet.pos.y + bullet.height > obstacle.posY){
+
+            this.removeObstacle(obstacleIndex)
+            this.removeBullet(bulletIndex)
+            this.addPoints()
+            return true
+          } else {
+            return false
+          }
+        })
+      })
+  },
+
+  removeObstacle(index) {
+    this.obstacles.splice(index, 1)
+  },
+
+  removeBullet(index) {
+    this.player.bullets.splice(index, 1)
+  },
+
+
+  detectFloorCollision() {
+  this.obstacles = this.obstacles.filter(obs => {
+    if (obs.posY > this.canvasSize.height) {
+      this.quitLives()
+    } else {
+      return true
     }
+  })
+  },
 
+  quitLives() {
+    this.player.lives--
+  },
+
+  addPoints() {
+    this.scoreBoard.points++
   }
+  
+  
+}
 
-  //1- Eliminar obstaculos. Tema vidas.
-  //2- Colisiones de los obs con el suelo y las balas
-  //3- Score
+// funcion que sume puntos. 
+// Mostrar vidas y puntos
+// Remove bullets que salgan del canvas

@@ -9,6 +9,7 @@ class Player {
     this.image = undefined
     this.bullets = []
     this.imageName = imageName
+    this.lives = 5
     this.init()
   }
 
@@ -33,7 +34,6 @@ class Player {
 
   shoot() {
     this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height))
- 
   }
 
 

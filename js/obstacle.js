@@ -1,5 +1,5 @@
 class Obstacle{
-    constructor(ctx, posX, posY, width, height, speed){
+    constructor(ctx, posX, posY, width, height, speed, imageName){
 
     this.ctx = ctx
     this.posX = posX
@@ -7,15 +7,23 @@ class Obstacle{
     this.width = width
     this.height = height
     this.speed = speed
+    this.image = undefined
+    this.imageName = imageName
+    this.init()
     }
 
+    init() {
+        this.image = new Image()
+        this.image.src = `img/${this.imageName}`
+        
+      }
+
     draw() {
-        this.ctx.fillStyle = "Black"
-        this.ctx.fillRect(this.posX, this.posY, 20, 20)
+        this.ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height)       
     }
 
     move() {
         this.posY += this.speed
-        console.log(this.posY);
+
     }
 }
