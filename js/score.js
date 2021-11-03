@@ -2,10 +2,11 @@ class Score {
   constructor(ctx, posX, posY){
     this.ctx = ctx,
     this.pos = {
-      x: 20,
+      x: 40,
       y: 35    
     }
     this.points = 0
+
   }
 
   draw() {

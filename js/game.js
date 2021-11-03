@@ -31,7 +31,7 @@ const covidGame = {
     },
 
     start() {
-      setInterval(() => {
+      this.intervalId = setInterval(() => {
         this.framesCounter++
         if (this.framesCounter % 60 === 0) {
           this.createObstacles()
@@ -62,9 +62,9 @@ const covidGame = {
 
     setDimensions() {
       this.canvasDOM.setAttribute("width", 1000)
-      this.canvasDOM.setAttribute("height", 850)
+      this.canvasDOM.setAttribute("height", 800)
       this.canvasSize.width = 1000
-      this.canvasSize.height = 850
+      this.canvasSize.height = 800
     },
 
     createPlayer() {
@@ -77,6 +77,8 @@ const covidGame = {
     },
 
     drawAll() {
+      this.drawBackground()
+      this.drawLivesBoard()
       this.drawScoreBoard()
       this.drawPlayer()
       this.drawBullets()
@@ -91,6 +93,25 @@ const covidGame = {
       this.createPlayer()
       this.createObstacles()
       this.createScoreBoard()
+      this.createLivesBoard()
+      this.createBackground()
+    },
+
+    createLivesBoard() {
+      this.lives = new Lives(this.ctx)
+    },
+
+    drawLivesBoard() {
+      this.lives.draw()
+    },
+
+    createBackground() {
+      console.log(this.canvasSize.width, this.canvasSize.height);
+      this.background = new Background(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "background.jpeg")
+    },
+
+    drawBackground() {
+      this.background.draw()
     },
 
     createScoreBoard() {
@@ -122,10 +143,6 @@ const covidGame = {
 
     moveObstacles() {
       this.obstacles.forEach(obs => obs.move())
-    },
-    
-    createBackground() {
-      this.background = new Background(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "background2.png")
     },
 
 
@@ -165,17 +182,26 @@ const covidGame = {
       return true
     }
   })
+
   },
 
   quitLives() {
     this.player.lives--
+    this.lives.playerLives = this.player.lives
+    if (this.player.lives == 0) {
+      this.gameOver()
+    }
+    
   },
 
   addPoints() {
     this.scoreBoard.points++
+  },
+
+  gameOver() {
+    clearInterval(this.intervalId)
   }
-  
-  
+
 }
 
 // funcion que sume puntos. 
