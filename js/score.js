@@ -2,16 +2,16 @@ class Score {
   constructor(ctx, posX, posY){
     this.ctx = ctx,
     this.pos = {
-      x: 40,
-      y: 35    
+      x: 225,
+      y: 63    
     }
     this.points = 0
 
   }
 
   draw() {
-    this.ctx.font = '40px serif';
-    this.ctx.fillText(this.points + " Virus Killed.", this.pos.x, this.pos.y);
+    this.ctx.font = '40px Helvetica';
+    this.ctx.fillText(this.points, this.pos.x, this.pos.y);
   }
 
 }

@@ -22,19 +22,18 @@ class Player {
     this.ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height )
   }
 
+  shoot() {
+    this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height, "bullet.png"))
+  }
+
+
   moveLeft() {
-    if (this.posX >= 20) this.posX -= 30
+    if (this.posX >= 20) this.posX -= 40
     else this.posX = 0
   }
 
   moveRight() {
-    if (this.posX + this.width < this.canvasSize.width) this.posX += 30
+    if (this.posX + this.width < this.canvasSize.width) this.posX += 40
   }
-
-
-  shoot() {
-    this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height))
-  }
-
-
 }
+

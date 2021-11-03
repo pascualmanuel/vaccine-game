@@ -1,3 +1,4 @@
 window.onload = () => {
     covidGame.init()
   }
+	
