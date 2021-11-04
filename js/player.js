@@ -10,6 +10,7 @@ class Player {
     this.bullets = []
     this.imageName = imageName
     this.lives = 5
+    this.canShoot = true
     this.init()
   }
 
@@ -26,14 +27,14 @@ class Player {
     this.bullets.push(new Bullet(this.ctx, this.posX, this.posY, this.width, this.height, "bullet.png"))
   }
 
-
   moveLeft() {
-    if (this.posX >= 20) this.posX -= 40
+    if (this.posX >= 20) this.posX -= 10
     else this.posX = 0
   }
 
   moveRight() {
-    if (this.posX + this.width < this.canvasSize.width) this.posX += 40
+    if (this.posX + this.width < this.canvasSize.width) this.posX += 10
   }
+
 }
 

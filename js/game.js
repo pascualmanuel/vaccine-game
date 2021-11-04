@@ -1,203 +1,314 @@
 const covidGame = {
-    title: 'Covid Game',
-    author: 'Alex & Manu',
-    license: undefined,
-    version: '1.0.0',
-    desciption: 'Kill the CO-VID',
-    canvasDOM: undefined,
-    ctx: undefined,
-    intervalId: undefined,
-    canvasSize: { width: undefined, height: undefined },
-    background: undefined,
-    player: undefined,
-    // scoreBoard: 0,
-    framesCounter: 0,
-    frames: 60,
-    obstacles: [],
-    keys: {
-    player: {
-        SPACE: " ",
-        ARROW_LEFT: "ArrowLeft",
-        ARROW_RIGHT: "ArrowRight"
-        },
-    },
+  title: 'Covid Game',
+  author: 'Alex & Manu',
+  license: undefined,
+  version: '1.0.0',
+  desciption: 'Kill the CO-VID',
+  canvasDOM: undefined,
+  ctx: undefined,
+  intervalId: undefined,
+  canvasSize: { width: undefined, height: undefined },
+  background: undefined,
+  player: undefined,
+  framesCounter: 0,
+  frames: 60,
+  extraLife: [],
+  obstacles: [],
+  pressedLeft: false,
+  pressedRight: false,
+  directionChanged: false,
+  keys: {
+  player: {
+      SPACE: " ",
+      ARROW_LEFT: "ArrowLeft",
+      ARROW_RIGHT: "ArrowRight"
+      },
+  },
+  showImg: false,
 
-    init() {
-      this.setContext()
-      this.setDimensions()
-      this.createAll()
-      this.setListeners()
-      this.start()
-    },
+  init() {
+    this.setContext()
+    this.setDimensions()
+    this.createAll()
+    this.setListeners()
+    this.start()
+  },
 
-    start() {
-      this.intervalId = setInterval(() => {
-        this.framesCounter++
-        if (this.framesCounter % 60 === 0) {
-          this.createObstacles()
-        }
-        this.clearScreen()
-        this.drawAll()
-        this.moveObstacles()
-        // if(this.detectFloorCollision()) {
-        // // console.log("quitlive");
-        // }
-        this.detectFloorCollision()
-        // console.log(this.detectCollision())
-        if (this.detectCollision()) {
-          
-        }
-      }, 1000 / this.frames);
-    },
+  start() {
+    this.intervalId = setInterval(() => {
 
-    clearScreen() {
-      this.ctx.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height)
-      this.drawPlayer
-    },
+      this.framesCounter++
+      if (this.framesCounter % 40 === 0) {
+        this.createObstacles()
+      }
+      if (this.framesCounter % 1200 === 0) {
+        this.createExtralife()
+      }
+      this.clearScreen()
+      this.drawAll()
+      this.moveAll()
+      this.detectAllCollisions()
 
-    setContext() {
-      this.canvasDOM = document.querySelector("#myCanvas")
-      this.ctx = this.canvasDOM.getContext("2d")
-    },
+    }, 1000 / this.frames);
+  },
 
-    setDimensions() {
-      this.canvasDOM.setAttribute("width", 1000)
-      this.canvasDOM.setAttribute("height", 800)
-      this.canvasSize.width = 1000
-      this.canvasSize.height = 800
-    },
+  clearScreen() {
+    this.ctx.clearRect(0, 0, this.canvasSize.width, this.canvasSize.height)
+    this.drawPlayer
+  },
 
-    createPlayer() {
-      this.player = new Player(this.ctx, this.canvasSize, this.canvasSize.width / 2 - 25, this.canvasSize.height - 170, 50, 165, "jeringa.png")
+  setContext() {
+    this.canvasDOM = document.querySelector("#myCanvas")
+    this.ctx = this.canvasDOM.getContext("2d")
+  },
 
-    },
+  setDimensions() {
+    this.canvasDOM.setAttribute("width", 1000)
+    this.canvasDOM.setAttribute("height", 800)
+    this.canvasSize.width = 1000
+    this.canvasSize.height = 800
+  },
 
-    drawPlayer() {
-      this.player.draw()
-    },
+  setListeners() {
 
-    drawAll() {
-      this.drawBackground()
-      this.drawLivesBoard()
-      this.drawScoreBoard()
-      this.drawPlayer()
-      this.drawBullets()
-      this.drawObstacles()
-    },
-
-    drawObstacles() {
-      this.obstacles.forEach(obstacle => obstacle.draw())
-    },
-    
-    createAll() {
-      this.createPlayer()
-      this.createScoreBoard()
-      this.createObstacles()
-      this.createLivesBoard()
-      this.createBackground()
-      this.createGameover()
-    },
-
-    createLivesBoard() {
-      this.lives = new Lives(this.ctx)
-    },
-
-    drawLivesBoard() {
-      this.lives.draw()
-    },
-
-    addLife() {
-      this.player.lives++
-    },
-
-    createBackground() {
-      this.background = new Background(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "back2 copy.png")
-    },
-
-    drawBackground() {
-      this.background.draw()
-    },
-
-    createScoreBoard() {
-      this.scoreBoard = new Score(this.ctx)
-    },
-
-    drawScoreBoard() {
-      this.scoreBoard.draw()
-    },
-
-    setListeners() {
-      document.onkeydown = e => {
-      e.key === this.keys.player.ARROW_LEFT ? this.player.moveLeft() : null
-      e.key === this.keys.player.ARROW_RIGHT ? this.player.moveRight() : null
+    document.onkeydown = (e) => {
+      e.key === 'ArrowLeft' && (this.pressedLeft = true)
+      e.key === 'ArrowRight' && (this.pressedRight = true)
       e.key === this.keys.player.SPACE ? this.player.shoot() : null
+    }
+    document.onkeyup = (e) => {  
+      e.key === 'ArrowLeft' && (this.pressedLeft = false)
+      e.key === 'ArrowRight' && (this.pressedRight = false)
+    }
+
+  },
+
+  // Create
+
+  createAll() {
+    this.createPlayer()
+    this.createScoreBoard()
+    this.createObstacles()
+    this.createLivesBoard()
+    this.createBackground()
+    this.createGameover()
+    this.createDirectionChangedImg()
+  },
+
+  createPlayer() {
+    this.player = new Player(this.ctx, this.canvasSize, this.canvasSize.width / 2 - 25, this.canvasSize.height - 170, 50, 165, "jeringa.png")
+  },
+
+  createLivesBoard() {
+    this.lives = new Lives(this.ctx)
+  },
+
+  createBackground() {
+    this.background = new Background(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "background.png")
+  },
+  
+  createScoreBoard() {
+    this.scoreBoard = new Score(this.ctx)
+  },
+  
+  createDirectionChangedImg() {
+    this.directionChangedImg = new ChangeDirection(this.ctx, this.canvasSize.width / 2 - 150, this.canvasSize.height / 2 - 150, 300, 300, "direction.png")
+  },
+
+  createObstacles() { 
+    let randomX = 0
+    let randomSpeed = 0
+
+    if (this.scoreBoard.points <= 10) {
+      randomX = Math.floor(Math.random() * 950 + 10);
+      randomSpeed = Math.floor(Math.random() * 1.2 + 1.5);
+    }
+    else if (this.scoreBoard.points > 10 && this.scoreBoard.points <= 15) {
+      randomX = Math.floor(Math.random() * 950 + 10)
+      randomSpeed = Math.floor(Math.random() * 1.2 + 1.9) 
+    }
+    else if (this.scoreBoard.points > 15 && this.scoreBoard.points <= 30) {
+      randomX = Math.floor(Math.random() * 950 + 10)
+      randomSpeed = Math.floor(Math.random() * 1.9 + 3.4) 
+    }  
+    else if (this.scoreBoard.points > 30 && this.scoreBoard.points <= 40) {
+      randomX = Math.floor(Math.random() * 950 + 10)
+      randomSpeed = Math.floor(Math.random() * 2 + 4) 
+    }  
+    else if (this.scoreBoard.points > 40) {
+      randomX = Math.floor(Math.random() * 950 + 10)
+      randomSpeed = Math.floor(Math.random() * 2 + 5) 
+    }  
+
+    this.obstacles.push(new Obstacle(this.ctx, randomX, 50, 70, 70, randomSpeed, "bacteria.png"))
+
+  },
+
+  createExtralife() {
+    randomX = Math.floor(Math.random() * 950 + 10);
+    randomSpeed = Math.floor(Math.random() * 1 + 2);
+    this.extraLife.push(new ExtraLife(this.ctx, randomX, 50, 120, 70, randomSpeed, "mask.png"))
+  },
+
+
+
+  // Draw
+
+  drawAll() {
+    this.drawBackground()
+    this.drawLivesBoard()
+    this.drawScoreBoard()
+    this.drawBullets()
+    this.drawPlayer()
+    this.drawExtraLife()
+    this.drawObstacles()
+    this.drawDirectionChangedImg()
+  },
+
+  drawPlayer() {
+    this.player.draw()
+  },
+
+  drawLivesBoard() {
+    this.lives.draw()
+  },
+  
+  drawScoreBoard() {
+    this.scoreBoard.draw()
+  },
+
+  drawBackground() {
+    this.background.draw()
+  },
+
+  drawDirectionChangedImg() {
+    this.directionChanged && this.directionChangedImg.draw()
+  },
+
+  drawBullets() {
+    this.player.bullets.forEach(bullet => bullet.draw())
+  },
+  
+  drawObstacles() {
+    this.obstacles.forEach(obstacle => obstacle.draw())
+  },
+
+  drawExtraLife() {
+    this.extraLife.forEach(exLife => exLife.draw())
+  },
+
+
+
+  // Move
+  
+  moveAll() {
+    this.moveObstacles()
+    this.moveExtraLife()
+    this.movePlayer()
+  },
+
+  movePlayer() {
+    if (this.scoreBoard.points < 15) {
+      this.pressedLeft && this.player.moveLeft()
+      this.pressedRight && this.player.moveRight()
+    }
+    else if (this.scoreBoard.points >= 15 && this.scoreBoard.points < 25) {
+      this.pressedLeft && this.player.moveRight()
+      this.pressedRight && this.player.moveLeft()
+      if(this.directionChanged === false) this.showDirectionChange(null)
+    }
+    else if (this.scoreBoard.points >= 25){
+      this.pressedLeft && this.player.moveLeft()
+      this.pressedRight && this.player.moveRight()
+      if (this.directionChanged === null) this.showDirectionChange(false)
     }
   },
 
-    drawBullets() {
-      this.player.bullets.forEach(bullet => bullet.draw())
-    },
-      
-    createObstacles() { 
-      let randomX = 0
-      let randomSpeed = 0
-      if (this.scoreBoard.points <= 5) {
-        console.log("5");
-          randomX = Math.floor(Math.random() * 950 + 10);
-          randomSpeed = Math.floor(Math.random() * 1 + 1);
-          }
-          else if (this.scoreBoard.points >= 5 && this.scoreBoard.points <= 10) {
-            console.log("10");
-              randomX = Math.floor(Math.random() * 950 + 10)
-              randomSpeed = Math.floor(Math.random() * 1.5 + 1.5) 
-          }
-          else if (this.scoreBoard.points > 10 && this.scoreBoard.points <= 15) {
-            console.log("15");
-              randomX = Math.floor(Math.random() * 950 + 10)
-              randomSpeed = Math.floor(Math.random() * 2 + 2) 
-          }  
+  moveObstacles() {
+    this.obstacles.forEach(obs => obs.move())
+  },
 
-          else if (this.scoreBoard.points > 15) {
-            console.log("20");
-              randomX = Math.floor(Math.random() * 950 + 10)
-              randomSpeed = Math.floor(Math.random() * 3 + 3) 
-          }  
-          // else if (this.scoreBoard.points >= 20) {
-          //   console.log("20");
-          //     randomX = Math.floor(Math.random() * 950 + 10)
-          //     randomSpeed = Math.floor(Math.random() * 4 + 4) 
-          // }
-          // else{
-          //   randomX = Math.floor(Math.random() * 950 + 10);
-          //   randomSpeed = Math.floor(Math.random() * 1 + 1);
-          // }
+  moveExtraLife() {
+    this.extraLife.forEach(exLife => exLife.move())
+  },
 
-  this.obstacles.push(new Obstacle(this.ctx, randomX, 50, 70, 70, randomSpeed, "bacteria.png"))
+  
 
-},
+  // Collisions
 
-    moveObstacles() {
-      this.obstacles.forEach(obs => obs.move())
-    },
+  detectAllCollisions() {
+    this.detectFloorCollision()
+    this.detectExtraLife()
+    this.detectCollision()
+  },
 
-
-   detectCollision() { 
-     return this.player.bullets.some((bullet, bulletIndex) => {
+  detectCollision() { 
+    return this.player.bullets.some((bullet, bulletIndex) => {
       return this.obstacles.some((obstacle, obstacleIndex) => {
-         if (bullet.pos.x < obstacle.posX + obstacle.width 
+        if (bullet.pos.x < obstacle.posX + obstacle.width 
           && bullet.pos.x + bullet.width > obstacle.posX 
           && bullet.pos.y < obstacle.posY + obstacle.height
-          && bullet.pos.y + bullet.height > obstacle.posY){
+          && bullet.pos.y + bullet.height > obstacle.posY) {
 
             this.removeObstacle(obstacleIndex)
             this.removeBullet(bulletIndex)
             this.addPoints()
             return true
-          } else {
-            return false
-          }
-        })
+        } else {
+          return false
+        }
       })
+    })
+  },
+
+  detectExtraLife() { 
+    return this.player.bullets.some((bullet, bulletIndex) => {
+      return this.extraLife.some((exLife, exLifeIndex) => {
+        if (bullet.pos.x < exLife.posX + exLife.width 
+        && bullet.pos.x + bullet.width > exLife.posX 
+        && bullet.pos.y < exLife.posY + exLife.height
+        && bullet.pos.y + bullet.height > exLife.posY) {
+
+          this.removeExtraLife(exLifeIndex)
+          this.removeBullet(bulletIndex)
+          this.addLife()
+          this.updateLivesMarker()
+          return true
+        } else {
+          return false
+        }
+      })
+    })
+  },
+
+  detectFloorCollision() {
+    this.obstacles = this.obstacles.filter(obs => {
+      if (obs.posY > this.canvasSize.height) {
+        this.quitLives()
+      } else {
+        return true
+      }
+    })
+  },
+
+
+
+  // Add, update, remove, others
+
+  addLife() {
+    this.player.lives++
+  },
+
+  addPoints() {
+    this.scoreBoard.points++
+  },
+
+  updateLivesMarker() {
+    this.lives.playerLives = this.player.lives
+  },
+
+  removeExtraLife(index) {
+    this.extraLife.splice(index, 1)
   },
 
   removeObstacle(index) {
@@ -208,76 +319,34 @@ const covidGame = {
     this.player.bullets.splice(index, 1)
   },
 
-
-  detectFloorCollision() {
-  this.obstacles = this.obstacles.filter(obs => {
-    if (obs.posY > this.canvasSize.height) {
-      this.quitLives()
-    } else {
-      return true
-    }
-  })
-
-  },
-
   quitLives() {
     this.player.lives--
-    this.lives.playerLives = this.player.lives
+    this.updateLivesMarker()
     if (this.player.lives === 0) {
       this.initGameover()
     }
-    
   },
 
-  addPoints() {
-    this.scoreBoard.points++
+  showDirectionChange(endValue) {
+    this.directionChanged = true
+    setTimeout(() => this.directionChanged = endValue, 2000)
   },
+
+
+
+  // Gameover
 
   initGameover() {
     clearInterval(this.intervalId)
-    this.drawGameover()
-    
+    this.drawGameover() 
   },
 
   createGameover() {
-    this.gameover = new Gameover(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "gameover.jpeg")
+    this.gameover = new Gameover(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "gameover.png")
   },
-
-
-
+  
   drawGameover() {
     this.gameover.draw()
   }
 
-
-
-
-
-
-
-
-
-  
 }
-
-// funcion que sume puntos. 
-// Mostrar vidas y puntos
-// Remove bullets que salgan del canvas
-
-
-// console.log(this.player.lives);
-// let randomX = 0
-// let randomSpeed = 0
-// if (this.scoreBoard.points < 5) {
-//   randomX = Math.floor(Math.random() * 950 + 10)
-//   randomSpeed = Math.floor(Math.random() * 1 + 1)
-// } else if (this.scoreBoard.points == 5) {
-//   this.addLife()
-//   randomX = Math.floor(Math.random() * 950 + 10)
-//   randomSpeed = Math.floor(Math.random() * 1 + 1.5 )
-// } else if (this.scoreBoard.points > 5){
-// randomX = Math.floor(Math.random() * 950 + 10)
-// randomSpeed = Math.floor(Math.random() * 1 + 1.5 )
-// }
-
-// this.obstacles.push(new Obstacle(this.ctx, randomX, 50, 70, 70, randomSpeed, "bacteria.png"))

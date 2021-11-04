@@ -2,15 +2,16 @@ class Lives {
   constructor(ctx, posX, posY){
     this.ctx = ctx,
     this.pos = {
-      x: 785,
-      y: 63    
+      x: 710,
+      y: 80    
     }
     this.playerLives = 5
   }
 
   draw() {
     this.ctx.font = '40px helvetica';
-    this.ctx.fillStyle = "white"
+    this.ctx.fillStyle = "black"
     this.ctx.fillText(this.playerLives, this.pos.x, this.pos.y);
   }
+  
 }

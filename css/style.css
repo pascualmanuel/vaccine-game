@@ -4,9 +4,13 @@
 }
 
 #game-board {
-    width: 1000px;
-    height: 700px;
-    float: right;
-    margin-right: 30px;
-    padding: 20px 0px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+
+
+
+

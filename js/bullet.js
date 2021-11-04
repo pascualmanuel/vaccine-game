@@ -1,15 +1,12 @@
 class Bullet {
   constructor(ctx, playerPosX, playerPosY, playerWidth, playerHeight, imageName){
     this.ctx = ctx;
-    
     this.pos = {
       x: playerPosX + (playerWidth / 3),
       y: playerPosY + (playerHeight / 3)
     }
-
     this.width = 20
     this.height = 35
-    // this.radius = 10;
     this.speed = {
       y: 10
     }
