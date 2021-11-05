@@ -336,7 +336,7 @@ const covidGame = {
 
   initGameover() {
     clearInterval(this.intervalId)
-    setTimeout(function(){ window.location.replace("./home.html");}, 2500);
+    setTimeout(function(){ window.location.replace("./index.html");}, 2500);
     this.drawGameover() 
   },
 
