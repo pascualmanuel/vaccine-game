@@ -13,7 +13,7 @@
 .home {
     width: 1000px;
     height: 800px;
-    background-image: url('../img/back.png');
+    background-image: url("../img/back.png");
     background-size: cover;
     background-position: center;
 }
@@ -23,9 +23,5 @@ a{
 }
 
 body{
-    /* background-image: url('https://www.cslbehring.com/-/media/shared/vita/covid19-virus-on-orange-background.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center; */
     background-color:black
 }
