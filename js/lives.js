@@ -2,8 +2,8 @@ class Lives {
   constructor(ctx, posX, posY){
     this.ctx = ctx,
     this.pos = {
-      x: 710,
-      y: 80    
+      x: 755,
+      y: 70    
     }
     this.playerLives = 5
   }
@@ -13,5 +13,5 @@ class Lives {
     this.ctx.fillStyle = "black"
     this.ctx.fillText(this.playerLives, this.pos.x, this.pos.y);
   }
-  
+
 }

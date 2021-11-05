@@ -1,9 +1,9 @@
 class Score {
   constructor(ctx, posX, posY){
-    this.ctx = ctx,
+    this.ctx= ctx,
     this.pos = {
-      x: 250,
-      y: 80
+      x: 210,
+      y: 70
     }
     this.points = 0
   }

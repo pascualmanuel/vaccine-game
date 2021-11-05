@@ -48,6 +48,8 @@ const covidGame = {
       this.drawAll()
       this.moveAll()
       this.detectAllCollisions()
+      sounds.game.play();
+      sounds.game.volume = 0.5;
 
     }, 1000 / this.frames);
   },
@@ -104,7 +106,7 @@ const covidGame = {
   },
 
   createBackground() {
-    this.background = new Background(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "background.png")
+    this.background = new Background(this.ctx, 0, 0, this.canvasSize.width, this.canvasSize.height, "backnone.png")
   },
   
   createScoreBoard() {
@@ -112,7 +114,7 @@ const covidGame = {
   },
   
   createDirectionChangedImg() {
-    this.directionChangedImg = new ChangeDirection(this.ctx, this.canvasSize.width / 2 - 150, this.canvasSize.height / 2 - 150, 300, 300, "direction.png")
+    this.directionChangedImg = new ChangeDirection(this.ctx, this.canvasSize.width / 2 - 150, this.canvasSize.height / 2 - 150, 400, 400, "direction.png")
   },
 
   createObstacles() { 
@@ -149,8 +151,6 @@ const covidGame = {
     randomSpeed = Math.floor(Math.random() * 1 + 2);
     this.extraLife.push(new ExtraLife(this.ctx, randomX, 50, 120, 70, randomSpeed, "mask.png"))
   },
-
-
 
   // Draw
 
@@ -198,7 +198,6 @@ const covidGame = {
   },
 
 
-
   // Move
   
   moveAll() {
@@ -233,7 +232,6 @@ const covidGame = {
   },
 
   
-
   // Collisions
 
   detectAllCollisions() {
@@ -338,6 +336,7 @@ const covidGame = {
 
   initGameover() {
     clearInterval(this.intervalId)
+    setTimeout(function(){ window.location.replace("./home.html");}, 2500);
     this.drawGameover() 
   },
 
