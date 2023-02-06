@@ -1,27 +1,27 @@
-*{
-   margin: 0;
-   padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
 #game-board {
-    margin-right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* height: 99vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .home {
-    width: 1000px;
-    height: 800px;
-    background-image: url("../img/back.png");
-    background-size: cover;
-    background-position: center;
+  width: 1000px;
+  height: 100vh;
+  background-image: url("../img/back.png");
+  background-size: cover;
+  background-position: center;
 }
 
-a{
-    padding:475px
+a {
+  padding: 475px;
 }
 
-body{
-    background-color:black
+body {
+  background-color: black;
 }
