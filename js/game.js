@@ -66,9 +66,9 @@ const covidGame = {
 
   setDimensions() {
     this.canvasDOM.setAttribute("width", 1000)
-    this.canvasDOM.setAttribute("height", 780)
+    this.canvasDOM.setAttribute("height", 750)
     this.canvasSize.width = 1000
-    this.canvasSize.height = 780
+    this.canvasSize.height = 750
   },
 
   setListeners() {
