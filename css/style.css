@@ -3,8 +3,8 @@
   padding: 0;
 }
 
-#game-board {
-  /* height: 99vh; */
+.game-board {
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,8 @@
   width: 1000px;
   height: 100vh;
   background-image: url("../img/back.png");
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
 }
 
@@ -25,3 +26,8 @@ a {
 body {
   background-color: black;
 }
+
+/* #myCanvas {
+  display: flex;
+  align-items: center;
+} */

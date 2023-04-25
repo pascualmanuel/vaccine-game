@@ -1,30 +1,38 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Covid Game</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="shortcut icon" href="./img/bacteria.png"/>
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <section class="game-board" id="game-board">
+      <div id="game-container">
+        <canvas id="myCanvas"></canvas>
+      </div>
+    </section>
 
+    <script src="js/directionImg.js"></script>
+    <script src="js/extraLife.js"></script>
+    <script src="js/gameover.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/lives.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/obstacle.js"></script>
+    <script src="js/bullet.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/index.js"></script>
 
-<div id="game-board">
-    <canvas id="myCanvas"></canvas>
-</div>
-
-<script src="js/directionImg.js"></script>
-<script src="js/extraLife.js"></script>
-<script src="js/gameover.js"></script>
-<script src="js/background.js"></script>
-<script src="js/lives.js"></script>
-<script src="js/score.js"></script>
-<script src="js/obstacle.js"></script>
-<script src="js/bullet.js"></script>
-<script src="js/player.js"></script>
-<script src="js/game.js"></script>
-<script src="js/index.js"></script>
-</body>
+    <audio id="shoot-sound">
+      <source src="shoot-sound.mp3" id="shoot-sound" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <audio id="background-music" loop>
+      <source src="game-music.mp3" id="background-music" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+  </body>
 </html>
