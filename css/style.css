@@ -2,7 +2,21 @@
   margin: 0;
   padding: 0;
 }
+@font-face {
+  font-family: "PermanentMarker";
+  src: url("./PermanentMarker-Regular.ttf") format("truetype");
+}
 
+@font-face {
+  font-family: "GameFont";
+  src: url("./Game-Font.ttf") format("truetype");
+}
+
+/* .nombre {
+  color: red;
+  font-size: 30px;
+  font-family: PermanentMarker;
+} */
 .game-board {
   height: 100vh;
   display: flex;
@@ -25,6 +39,10 @@ a {
 
 body {
   background-color: black;
+}
+
+#game-board {
+  transform: scale(0.8);
 }
 
 /* #myCanvas {

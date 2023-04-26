@@ -31,17 +31,9 @@ const covidGame = {
     this.setDimensions();
     this.createAll();
     this.setListeners();
-    // this.startBackgroundMusic(); // Add this line
     this.start();
   },
 
-  // startBackgroundMusic() {
-  //   const backgroundMusic = document.getElementById("background-music");
-  //   if (backgroundMusic) {
-  //     backgroundMusic.volume = 0.5; // You can adjust the volume (0 to 1)
-  //     backgroundMusic.play();
-  //   }
-  // },
   start() {
     this.intervalId = setInterval(() => {
       this.framesCounter++;
@@ -122,7 +114,7 @@ const covidGame = {
       0,
       this.canvasSize.width,
       this.canvasSize.height,
-      "backnone.png"
+      "backnone2.png"
     );
   },
 
@@ -381,7 +373,3 @@ window.addEventListener("DOMContentLoaded", function () {
     backgroundMusic.play();
   }
 });
-
-// window.onload = function () {
-//   covidGame.init();
-// };
